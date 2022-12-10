@@ -17,6 +17,7 @@ dependencies:
   - pytest
   - pytest-randomly
   - pytest-cov
+  - pytest-asyncio
   - coverage
   - flake8
   - autopep8

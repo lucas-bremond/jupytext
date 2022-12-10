@@ -5,6 +5,7 @@ black
 pytest>=3.6
 pytest-randomly
 pytest-cov
+pytest-asyncio
 notebook
 jupyter_client
 nbconvert

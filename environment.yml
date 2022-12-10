@@ -18,6 +18,7 @@ dependencies:
   - pytest-xdist
   - pytest-randomly
   - pytest-cov
+  - pytest-asyncio
   - pre-commit
   - gitpython
   - pylint
