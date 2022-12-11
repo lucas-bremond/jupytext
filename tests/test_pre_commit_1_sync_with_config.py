@@ -3,7 +3,7 @@ from git.exc import HookExecutionError
 from nbformat.v4.nbbase import new_markdown_cell
 from pre_commit.main import main as pre_commit
 
-from jupytext import TextFileContentsManager, read
+from jupytext import read
 
 from .utils import (
     skip_pre_commit_tests_on_windows,
@@ -13,7 +13,8 @@ from .utils import (
 
 @skip_pre_commit_tests_on_windows
 @skip_pre_commit_tests_when_jupytext_folder_is_not_a_git_repo
-def test_pre_commit_hook_sync_with_config(
+async def test_pre_commit_hook_sync_with_config(
+    cm,
     tmpdir,
     cwd_tmpdir,
     tmp_repo,
@@ -38,9 +39,8 @@ repos:
 
     # create a test notebook and save it in Jupyter
     nb = python_notebook
-    cm = TextFileContentsManager()
     cm.root_dir = str(tmpdir)
-    cm.save(dict(type="notebook", content=nb), "test.ipynb")
+    await cm.save(dict(type="notebook", content=nb), "test.ipynb")
 
     # Assert that "text_representation" is in the Jupytext metadata #900
     assert "text_representation" in tmpdir.join("test.py").read()
@@ -68,9 +68,9 @@ repos:
 
     # modify the ipynb file in Jupyter
     # Reload the notebook
-    nb = cm.get("test.ipynb")["content"]
+    nb = (await cm.get("test.ipynb"))["content"]
     nb.cells.append(new_markdown_cell("A new cell"))
-    cm.save(dict(type="notebook", content=nb), "test.ipynb")
+    await cm.save(dict(type="notebook", content=nb), "test.ipynb")
 
     # The text representation metadata is in the py file
     assert "text_representation" in tmpdir.join("test.py").read()

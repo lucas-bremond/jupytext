@@ -17,7 +17,8 @@ from .utils import (
 
 @skip_pre_commit_tests_on_windows
 @skip_pre_commit_tests_when_jupytext_folder_is_not_a_git_repo
-def test_pre_commit_hook_sync_with_no_config(
+async def test_pre_commit_hook_sync_with_no_config(
+    cm,
     tmpdir,
     cwd_tmpdir,
     tmp_repo,
@@ -45,7 +46,7 @@ repos:
     (tmpdir / "notebooks").mkdir()
     cm = TextFileContentsManager()
     cm.root_dir = str(tmpdir)
-    cm.save(dict(type="notebook", content=nb), "nb.ipynb")
+    await cm.save(dict(type="notebook", content=nb), "nb.ipynb")
 
     # Add it to git
     tmp_repo.git.add("nb.ipynb")
@@ -58,7 +59,7 @@ repos:
 
     # Modify and save the notebook
     nb.cells.append(new_markdown_cell("New markdown cell"))
-    cm.save(dict(type="notebook", content=nb), "nb.ipynb")
+    await cm.save(dict(type="notebook", content=nb), "nb.ipynb")
 
     # No .py file at the moment
     assert not (tmpdir / "nb.py").exists()

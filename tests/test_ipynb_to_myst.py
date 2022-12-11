@@ -169,7 +169,7 @@ def test_meaningfull_error_write_myst_missing(tmpdir):
 
 
 @requires_no_myst
-def test_meaningfull_error_open_myst_missing(tmpdir):
+async def test_meaningfull_error_open_myst_missing(tmpdir):
     md_file = tmpdir.join("notebook.md")
     md_file.write(
         """---
@@ -194,12 +194,12 @@ kernelspec:
     cm.root_dir = str(tmpdir)
 
     with pytest.raises(HTTPError, match=PLEASE_INSTALL_MYST):
-        cm.get("notebook.md")
+        await cm.get("notebook.md")
 
 
 @requires_myst
 @pytest.mark.parametrize("language_info", ["none", "std", "no_pygments_lexer"])
-def test_myst_representation_same_cli_or_contents_manager(
+async def test_myst_representation_same_cli_or_contents_manager(
     tmpdir, cwd_tmpdir, notebook_with_outputs, language_info
 ):
     """This test gives some information on #759. As of Jupytext 1.11.1, in the MyST Markdown format,
@@ -246,7 +246,7 @@ def test_myst_representation_same_cli_or_contents_manager(
     cm.formats = "ipynb,md:myst"
     cm.root_dir = str(tmpdir.mkdir("contents_manager"))
 
-    cm.save(model=dict(content=nb, type="notebook"), path="notebook.ipynb")
+    await cm.save(model=dict(content=nb, type="notebook"), path="notebook.ipynb")
     text_cm = tmpdir.join("contents_manager").join("notebook.md").read()
 
     compare(text_cm, text_api)
