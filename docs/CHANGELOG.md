@@ -6,6 +6,7 @@ Jupytext ChangeLog
 
 **Fixed**
 - Jupytext's contents manager can be derived from asynchronous contents manager (now the default since `jupyter_server==2.0.0`) ([#1020](https://github.com/mwouts/jupytext/issues/1020))
+- Jupytext is not tested anymore against Python 3.6 anymore, so we now require Python 3.7 or above.
 
 
 1.14.3 (2022-12-11)
