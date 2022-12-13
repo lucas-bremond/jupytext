@@ -219,12 +219,12 @@ jobs:
       - name: Upload coverage
         uses: codecov/codecov-action@v1
 
-  test-pip-notebook-pre:
+  test-pip-jupyter-pre:
     needs: skip_duplicate
     if: ${{ needs.skip_duplicate.outputs.should_skip == 'false' }}
     strategy:
       matrix:
-        python-version: [ 3.9 ]
+        python-version: [ 3.11 ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -239,8 +239,8 @@ jobs:
           # All dependencies but markdown-it-py
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
-          # Notebook pre-release version #933
-          pip install --pre -U notebook
+          # Jupyter pre-release #933 #1020
+          pip install --pre -U jupyter_core jupyter_server nbformat notebook
       - name: Install a Jupyter Kernel
         run: python -m ipykernel install --name python_kernel --user
       - name: Test with pytest
