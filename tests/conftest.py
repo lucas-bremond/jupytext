@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 from git import Repo
+from jupyter_server.serverapp import ServerApp
 from jupyter_server.services.contents.largefilemanager import (
     AsyncLargeFileManager,
     LargeFileManager,
@@ -49,7 +50,13 @@ def cwd_tmp_path(tmp_path):
         yield tmp_path
 
 
-@pytest.fixture(params=[LargeFileManager, AsyncLargeFileManager])
+@pytest.fixture(
+    params={
+        ServerApp.contents_manager_class.default(),
+        LargeFileManager,
+        AsyncLargeFileManager,
+    }
+)
 def cm(request, tmp_path):
     """Returns a TextContentsManager"""
     return jupytext.build_jupytext_contents_manager_class(request.param)()
