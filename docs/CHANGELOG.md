@@ -4,6 +4,9 @@ Jupytext ChangeLog
 1.14.5 (2023-02-??)
 -------------------
 
+**Changed**
+- We have updated the CI following Matthew Feickert's recommendations at [#1037](https://github.com/mwouts/jupytext/issues/1037)
+
 
 1.14.4 (2022-12-11)
 -------------------
